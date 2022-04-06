@@ -1,4 +1,5 @@
-import { Spacer, Text, useTheme } from "@nextui-org/react"
+import NextLink from 'next/link';
+import { Link, Spacer, Text, useTheme } from "@nextui-org/react"
 import Image from "next/image";
 
 export const NavBar = () => {
@@ -12,7 +13,7 @@ export const NavBar = () => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'start',
-            padding: '0px 20px',
+            padding: '0 20px',
             backgroundColor: theme?.colors.gray900.value,
         }}>
 
@@ -23,12 +24,22 @@ export const NavBar = () => {
                 height={70}
             />
 
-            <Text color="white" h2>P</Text>
-            <Text color="white" h3>okemon</Text>
+            <NextLink href='/' passHref>
+                <Link>
+                    <Text color="white" h2>P</Text>
+                    <Text color="white" h3>okemon</Text>
+                </Link>
+            </NextLink>
+            
 
             {/* Spacer to fill the remaining space  */}
             <Spacer css={{ flex: 1 }} />
-            <Text color="white" >Favorites</Text>
+
+            <NextLink href='/favorites' passHref>
+                <Link>
+                    <Text color="white" >Favorites</Text>
+                </Link>
+            </NextLink>
 
 
         </div>
