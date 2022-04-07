@@ -1,20 +1,35 @@
-import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react';
 import { NextPage, GetStaticProps, GetStaticPaths } from 'next';
+import Image from 'next/image';
+import { Button, Card, Container, Grid, Text } from '@nextui-org/react';
 
 import { Layout } from '../../components/layouts'
 import { pokeApi } from '../../api';
 import { Pokemon } from '../../interfaces';
-import { Button, Card, Container, Grid, Text } from '@nextui-org/react';
-import Image from 'next/image';
+import { localFavorites } from '../../utils';
+
 
 
 interface Props {
-  // pokemon: any;
   pokemon: Pokemon;
-
 }
 
 const PokemonPage: NextPage<Props>= ( { pokemon } ) => {
+
+  const [isInFavorite, setIsInFavorite] = useState( false );
+
+  const onToggleFavorite = () => {
+    localFavorites.toggleFavorite(pokemon.id);
+    setIsInFavorite( !isInFavorite );
+  }
+
+  // console.log({ existeWindow: typeof window }); //para ver si existen renderizados en el navegador o en el servidor...
+  // util cuando se usa NextJS en el servidor y no se sabe por que falla el renderizado
+
+  useEffect(() => {
+    localFavorites.existInFavorites( pokemon.id ) ? setIsInFavorite(true) : setIsInFavorite(false);
+  }, []);
+
 
   return (
     <Layout title={ pokemon.name }>
@@ -39,9 +54,10 @@ const PokemonPage: NextPage<Props>= ( { pokemon } ) => {
               <Text h1 transform='capitalize'>{ pokemon.name }</Text>
               <Button
                 color='gradient'
-                ghost
+                ghost= { isInFavorite }
+                onClick={ onToggleFavorite }
               >
-                Guardar en Favoritos
+                { isInFavorite ? 'En Favoritos' : 'Guardar en Favoritos' } 
               </Button>
             </Card.Header>
 
