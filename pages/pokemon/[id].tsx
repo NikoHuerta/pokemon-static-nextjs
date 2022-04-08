@@ -3,6 +3,8 @@ import { NextPage, GetStaticProps, GetStaticPaths } from 'next';
 import Image from 'next/image';
 import { Button, Card, Container, Grid, Text } from '@nextui-org/react';
 
+import confetti from 'canvas-confetti';
+
 import { Layout } from '../../components/layouts'
 import { pokeApi } from '../../api';
 import { Pokemon } from '../../interfaces';
@@ -18,9 +20,24 @@ const PokemonPage: NextPage<Props>= ( { pokemon } ) => {
 
   const [isInFavorite, setIsInFavorite] = useState( false );
 
-  const onToggleFavorite = () => {
-    localFavorites.toggleFavorite(pokemon.id);
+  const onToggleFavorite = async() => {
+    localFavorites.toggleFavorite( pokemon.id );
     setIsInFavorite( !isInFavorite );
+    
+    if( !isInFavorite ) {
+      await confetti({
+        zIndex: 100,
+        particleCount: 100,
+        spread: 160,
+        angle: -100,
+        origin: {
+          x: 1,
+          y: 0,
+        }
+      });
+    }
+    
+    
   }
 
   // console.log({ existeWindow: typeof window }); //para ver si existen renderizados en el navegador o en el servidor...

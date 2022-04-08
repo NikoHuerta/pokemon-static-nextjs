@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Card, Grid, Text } from '@nextui-org/react';
 
 import { Layout } from '../../components/layouts'
 import { NoFavorites } from '../../components/ui';
