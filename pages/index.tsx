@@ -18,7 +18,6 @@ const HomePage: NextPage<Props> = ({ pokemons }) => {
   return (
     <>
       <Layout title='Listado de Pokemon'>
-        
         <Grid.Container gap={ 2 } justify='flex-start'>
           { 
             pokemons.map( poke => (

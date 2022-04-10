@@ -8,7 +8,7 @@ import confetti from 'canvas-confetti';
 import { Layout } from '../../components/layouts'
 import { pokeApi } from '../../api';
 import { Pokemon, PokemonColorTypes } from '../../interfaces';
-import { localFavorites, pokemonTypesColor } from '../../utils';
+import { localFavorites, pokemonTypesColor, getPokemonInfo } from '../../utils';
 
 
 
@@ -167,20 +167,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => { //Se ejecu
 
   // console.log(ctx.params); //property en buildtime, no en runtime, desde el cliente no se puede acceder a esta propiedad
   const { id } = params as { id: string };
-  const { data } = await pokeApi.get<Pokemon>(`/pokemon/${id}`);
-  
-  const pokemon = {
-    id: data.id,
-    name: data.name,  
-    sprites: data.sprites,
-    types: data.types,
-    abilities: data.abilities,
-    stats: data.stats
-  }
 
   return {
     props: {
-      pokemon
+      pokemon: await getPokemonInfo( id )
     }
   }
 }
