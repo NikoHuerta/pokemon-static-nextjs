@@ -158,7 +158,8 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 
   return {
     paths: pokemon386.map(id => ({ params: { id } })),
-    fallback: false
+    // fallback: false // 404 al no encontrar la ruta
+    fallback: 'blocking' // render the id
   }
 }
 
@@ -167,11 +168,22 @@ export const getStaticProps: GetStaticProps = async ({ params }) => { //Se ejecu
 
   // console.log(ctx.params); //property en buildtime, no en runtime, desde el cliente no se puede acceder a esta propiedad
   const { id } = params as { id: string };
+  const pokemon = await getPokemonInfo( id );
+
+  if(!pokemon){
+    return {
+      redirect: {
+        destination: '/', //redirecciona a la pagina de inicio
+        permanent: false // si es true, redirecciona permanentemente, si es false, redirecciona temporalmente
+      }
+    }
+  }
 
   return {
     props: {
-      pokemon: await getPokemonInfo( id )
-    }
+      pokemon 
+    },
+    revalidate: 86400 //cada dia se vuelve a revalidar la data (60 segundos * 60 minutos * 24 horas)
   }
 }
   
